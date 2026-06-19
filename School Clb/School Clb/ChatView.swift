@@ -75,7 +75,7 @@ struct ChatView: View {
                     )
                 }
                 .padding(20)
-                .padding(.bottom, 80)
+                .padding(.bottom, 100) // ✅ Отступ снизу, чтобы контент не заезжал под таб-бар
             }
             .background(Color(uiColor: .systemGroupedBackground))
             .navigationTitle(chatTitle)

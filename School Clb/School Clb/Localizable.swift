@@ -503,8 +503,8 @@ enum L10n {
     
     static var tabMovement: String {
         switch AppLanguage.current {
-        case "RU": return "ДВИЖ"
-        default: return "КЫЙМЫЛ"
+        case "RU": return "КУРС"
+        default: return "КУРС"
         }
     }
     

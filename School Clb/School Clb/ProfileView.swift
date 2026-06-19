@@ -41,7 +41,7 @@ struct ProfileView: View {
                     versionText
                 }
                 .padding(.vertical, 20)
-                .padding(.bottom, 80) // Отступ для таб-бара
+                .padding(.bottom, 100) // ✅ Отступ снизу, чтобы контент не заезжал под таб-бар
             }
             .background(Color(uiColor: .systemGroupedBackground))
             .navigationTitle(L10n.profile)
