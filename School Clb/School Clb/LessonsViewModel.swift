@@ -40,9 +40,9 @@ class LessonsViewModel: ObservableObject {
         
         // Mock данные
         levels = [
-            CourseLevel(id: "1", courseId: course.id, title: "А деңгээли", titleKg: "А деңгээли", titleRu: "Уровень А", minScore: 0, maxScore: 120, order: 1, totalLessons: 24, freeLessons: 6),
-            CourseLevel(id: "2", courseId: course.id, title: "В деңгээли", titleKg: "В деңгээли", titleRu: "Уровень В", minScore: 121, maxScore: 170, order: 2, totalLessons: 24, freeLessons: 6),
-            CourseLevel(id: "3", courseId: course.id, title: "С деңгээли", titleKg: "С деңгээли", titleRu: "Уровень С", minScore: 171, maxScore: 245, order: 3, totalLessons: 24, freeLessons: 6)
+            CourseLevel(id: "1", courseId: course.id, title: "А деңгээли", titleKg: "А деңгээли", titleRu: "Уровень А", minScore: 0, maxScore: 120, order: 1, totalLessons: 24, freeLessons: 3),
+            CourseLevel(id: "2", courseId: course.id, title: "В деңгээли", titleKg: "В деңгээли", titleRu: "Уровень В", minScore: 121, maxScore: 170, order: 2, totalLessons: 24, freeLessons: 3),
+            CourseLevel(id: "3", courseId: course.id, title: "С деңгээли", titleKg: "С деңгээли", titleRu: "Уровень С", minScore: 171, maxScore: 245, order: 3, totalLessons: 24, freeLessons: 3)
         ]
     }
     

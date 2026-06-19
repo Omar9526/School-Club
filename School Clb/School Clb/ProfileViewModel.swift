@@ -35,7 +35,7 @@ class ProfileViewModel: ObservableObject {
             avatarURL: nil,
             vibe: "🎓",
             role: .student,
-            subscriptionTier: .pro  // ✅ PRO тариф - полный доступ ко всем функциям для тестирования
+            subscriptionTier: .pro  // ✅ PRO тариф - полный доступ ко всем функциям
         )
     }
     

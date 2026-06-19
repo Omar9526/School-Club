@@ -310,7 +310,7 @@ struct LessonButton: View {
 #Preview {
     NavigationStack {
         LessonListView(
-            level: CourseLevel(id: "1", courseId: "1", title: "А деңгээли", titleKg: "А деңгээли", titleRu: "Уровень А", minScore: 0, maxScore: 120, order: 1, totalLessons: 24, freeLessons: 6),
+            level: CourseLevel(id: "1", courseId: "1", title: "А деңгээли", titleKg: "А деңгээли", titleRu: "Уровень А", minScore: 0, maxScore: 120, order: 1, totalLessons: 24, freeLessons: 3),
             viewModel: LessonsViewModel(),
             isPremium: false
         )

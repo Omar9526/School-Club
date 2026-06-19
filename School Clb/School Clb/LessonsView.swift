@@ -9,19 +9,19 @@ import SwiftUI
 
 struct LessonsView: View {
     @StateObject private var viewModel = LessonsViewModel()
-    @State private var selectedCategory: CourseCategory = .ort
+    @State private var showInfoSection: InfoSection?
     @State private var refreshView = false
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // Табы категорий
-                categoryTabs
+                // Инфо-кнопки
+                infoButtonsRow
                 
-                // Список курсов
+                // Список всех курсов
                 ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(filteredCourses) { course in
+                        ForEach(viewModel.courses) { course in
                             NavigationLink(destination: CourseLevelsView(course: course, viewModel: viewModel)) {
                                 CourseCard(course: course)
                             }
@@ -39,58 +39,150 @@ struct LessonsView: View {
                 refreshView.toggle()
             }
         }
+        .sheet(item: $showInfoSection) { section in
+            InfoSectionView(section: section)
+        }
     }
     
-    // MARK: - Category Tabs
-    private var categoryTabs: some View {
-        HStack(spacing: 0) {
-            CategoryTabButton(
-                title: L10n.categoryORT,
-                isSelected: selectedCategory == .ort,
-                action: { selectedCategory = .ort }
-            )
+    // MARK: - Info Buttons Row
+    private var infoButtonsRow: some View {
+        VStack(spacing: 12) {
+            // Подпись под заголовком
+            Text("Выберите курс")
+                .font(.system(size: 14, weight: .regular, design: .rounded))
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
             
-            CategoryTabButton(
-                title: L10n.categoryHimBio,
-                isSelected: selectedCategory == .himbio,
-                action: { selectedCategory = .himbio }
-            )
-            
-            CategoryTabButton(
-                title: L10n.categoryOther,
-                isSelected: selectedCategory == .other,
-                action: { selectedCategory = .other }
-            )
+            // Три инфо-кнопки
+            HStack(spacing: 12) {
+                InfoButton(
+                    title: "SC",
+                    icon: "graduationcap.fill",
+                    color: "#1B2A6B",
+                    action: { showInfoSection = .sc }
+                )
+                
+                InfoButton(
+                    title: "ЖРТ жөнүндө",
+                    icon: "book.fill",
+                    color: "#E84E1B",
+                    action: { showInfoSection = .ortKg }
+                )
+                
+                InfoButton(
+                    title: "Все про ОРТ",
+                    icon: "book.fill",
+                    color: "#FFE600",
+                    action: { showInfoSection = .ortRu }
+                )
+            }
+            .padding(.horizontal, 20)
         }
-        .padding(.horizontal, 20)
         .padding(.vertical, 12)
         .background(Color.white)
         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
-    
-    // MARK: - Filtered Courses
-    private var filteredCourses: [Course] {
-        viewModel.courses.filter { $0.category == selectedCategory }
-    }
 }
 
-// MARK: - Category Tab Button
-struct CategoryTabButton: View {
+// MARK: - Info Button
+struct InfoButton: View {
     let title: String
-    let isSelected: Bool
+    let icon: String
+    let color: String
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 13, weight: isSelected ? .bold : .regular, design: .rounded))
-                .foregroundColor(isSelected ? Color(hex: "#1B2A6B") : .gray)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity)
-                .background(
-                    isSelected ? Color(hex: "#FFE600").opacity(0.2) : Color.clear
-                )
-                .cornerRadius(8)
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color(hex: color))
+                
+                Text(title)
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundColor(Color(hex: "#1B2A6B"))
+                    .lineLimit(1)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(Color(hex: color).opacity(0.1))
+            .cornerRadius(10)
+        }
+    }
+}
+
+// MARK: - Info Section Enum
+enum InfoSection: String, Identifiable {
+    case sc = "SC"
+    case ortKg = "ЖРТ жөнүндө"
+    case ortRu = "Все про ОРТ"
+    
+    var id: String { rawValue }
+    
+    var icon: String {
+        switch self {
+        case .sc: return "graduationcap.fill"
+        case .ortKg, .ortRu: return "book.fill"
+        }
+    }
+    
+    var color: String {
+        switch self {
+        case .sc: return "#1B2A6B"
+        case .ortKg: return "#E84E1B"
+        case .ortRu: return "#FFE600"
+        }
+    }
+}
+
+// MARK: - Info Section View
+struct InfoSectionView: View {
+    let section: InfoSection
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                Spacer()
+                
+                Image(systemName: section.icon)
+                    .font(.system(size: 80))
+                    .foregroundColor(Color(hex: section.color))
+                
+                Text(section.rawValue)
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundColor(Color(hex: "#1B2A6B"))
+                
+                Text("Скоро здесь будет информация")
+                    .font(.system(size: 16, weight: .regular, design: .rounded))
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
+                
+                Button(action: { dismiss() }) {
+                    Text("Закрыть")
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color(hex: "#1B2A6B"))
+                        .cornerRadius(12)
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
+            }
+            .background(Color(hex: "#F5F5F5"))
+            .navigationTitle(section.rawValue)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Закрыть") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }
