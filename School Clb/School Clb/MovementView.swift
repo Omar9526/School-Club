@@ -50,7 +50,7 @@ struct MovementView: View {
                     )
                 }
                 .padding(20)
-                .padding(.bottom, 100) // ✅ Отступ снизу, чтобы контент не заезжал под таб-бар
+                .padding(.bottom, 90) // ✅ Отступ под плавающий таб-бар
             }
             .background(Color(hex: "#F5F5F5"))
             .navigationTitle("Курс")
@@ -118,7 +118,7 @@ struct MovementView: View {
             HStack {
                 Image(systemName: "person.fill")
                     .font(.system(size: 24))
-                    .foregroundColor(Color(hex: "#FFE600"))
+                    .foregroundColor(Color(hex: "#1B2A6B"))
                 
                 Text("МОИ БАЛЛЫ")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
@@ -143,18 +143,9 @@ struct MovementView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(
-            LinearGradient(
-                colors: [Color(hex: "#FFE600").opacity(0.15), Color(hex: "#FFE600").opacity(0.05)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .background(Color.white)
         .cornerRadius(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color(hex: "#FFE600").opacity(0.3), lineWidth: 2)
-        )
+        .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
     }
     
     // MARK: - В) ПОБЕДИТЕЛИ ГРУППЫ
@@ -260,7 +251,7 @@ struct MovementGroupGradesView: View {
                         
                         Text(student.grade)
                             .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .foregroundColor(Color(hex: "#FFE600"))
+                            .foregroundColor(Color(hex: "#E84E1B"))
                     }
                     .padding(.vertical, 8)
                 }

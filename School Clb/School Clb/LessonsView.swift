@@ -28,7 +28,7 @@ struct LessonsView: View {
                         }
                     }
                     .padding(20)
-                    .padding(.bottom, 100) // ✅ Отступ снизу, чтобы контент не заезжал под таб-бар
+                    .padding(.bottom, 90) // ✅ Отступ под плавающий таб-бар
                 }
                 .background(Color(hex: "#F5F5F5"))
             }
