@@ -15,6 +15,8 @@ struct VideoLessonView: View {
     @State private var player: AVPlayer?
     @State private var isPlaying = false
     @State private var currentScale: CGFloat = 1.0
+    @State private var currentOffset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -26,11 +28,36 @@ struct VideoLessonView: View {
                         VideoPlayer(player: player)
                             .frame(height: 250)
                             .scaleEffect(currentScale)
+                            .offset(currentOffset)
                             .gesture(
-                                MagnificationGesture()
-                                    .onChanged { value in
-                                        currentScale = min(max(value, 1.0), 3.0)
-                                    }
+                                SimultaneousGesture(
+                                    MagnificationGesture()
+                                        .onChanged { value in
+                                            currentScale = min(max(value, 1.0), 3.0)
+                                        }
+                                        .onEnded { _ in
+                                            // Если зум сброшен до 1x, сбросить offset
+                                            if currentScale == 1.0 {
+                                                withAnimation(.spring()) {
+                                                    currentOffset = .zero
+                                                    lastOffset = .zero
+                                                }
+                                            }
+                                        },
+                                    DragGesture()
+                                        .onChanged { value in
+                                            // Перемещать можно только при зуме > 1x
+                                            if currentScale > 1.0 {
+                                                currentOffset = CGSize(
+                                                    width: lastOffset.width + value.translation.width,
+                                                    height: lastOffset.height + value.translation.height
+                                                )
+                                            }
+                                        }
+                                        .onEnded { _ in
+                                            lastOffset = currentOffset
+                                        }
+                                )
                             )
                             .onAppear {
                                 // Запрет скриншотов (для защиты контента)
