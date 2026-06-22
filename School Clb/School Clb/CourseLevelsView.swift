@@ -173,7 +173,7 @@ struct LevelCard: View {
                             .cornerRadius(3)
                         
                         Rectangle()
-                            .fill(Color(hex: "#FFE600"))
+                            .fill(Color(hex: "#1B2A6B"))
                             .frame(width: geometry.size.width * 0, height: 6)
                             .cornerRadius(3)
                     }

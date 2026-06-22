@@ -78,7 +78,7 @@ struct PracticeTestView: View {
                                     .cornerRadius(4)
                                 
                                 Rectangle()
-                                    .fill(Color(hex: "#FFE600"))
+                                    .fill(Color(hex: "#1B2A6B"))
                                     .frame(width: geometry.size.width * progress, height: 8)
                                     .cornerRadius(4)
                                     .animation(.easeInOut, value: progress)
@@ -120,13 +120,14 @@ struct PracticeTestView: View {
                             }
                             
                             // Варианты ответов
-                            VStack(spacing: 12) {
+                            VStack(spacing: 8) {
                                 AnswerButton(
                                     letter: "А",
                                     text: question.optionA,
                                     isSelected: selectedAnswer == "A",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "A",
                                     isWrong: isAnswerChecked && selectedAnswer == "A" && question.correctAnswer != "A",
+                                    showCorrectAnswer: isAnswerChecked,
                                     action: { selectAnswer("A") }
                                 )
                                 
@@ -136,6 +137,7 @@ struct PracticeTestView: View {
                                     isSelected: selectedAnswer == "B",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "B",
                                     isWrong: isAnswerChecked && selectedAnswer == "B" && question.correctAnswer != "B",
+                                    showCorrectAnswer: isAnswerChecked,
                                     action: { selectAnswer("B") }
                                 )
                                 
@@ -145,6 +147,7 @@ struct PracticeTestView: View {
                                     isSelected: selectedAnswer == "C",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "C",
                                     isWrong: isAnswerChecked && selectedAnswer == "C" && question.correctAnswer != "C",
+                                    showCorrectAnswer: isAnswerChecked,
                                     action: { selectAnswer("C") }
                                 )
                                 
@@ -154,6 +157,7 @@ struct PracticeTestView: View {
                                     isSelected: selectedAnswer == "D",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "D",
                                     isWrong: isAnswerChecked && selectedAnswer == "D" && question.correctAnswer != "D",
+                                    showCorrectAnswer: isAnswerChecked,
                                     action: { selectAnswer("D") }
                                 )
                             }
@@ -176,7 +180,7 @@ struct PracticeTestView: View {
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 16)
-                                        .background(selectedAnswer != nil ? Color(hex: "#FFE600") : Color.gray)
+                                        .background(selectedAnswer != nil ? Color(hex: "#1B2A6B") : Color.gray)
                                         .cornerRadius(12)
                                 }
                                 .disabled(selectedAnswer == nil)

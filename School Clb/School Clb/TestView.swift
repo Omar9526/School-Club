@@ -66,7 +66,7 @@ struct TestView: View {
                                     .cornerRadius(4)
                                 
                                 Rectangle()
-                                    .fill(Color(hex: "#FFE600"))
+                                    .fill(Color(hex: "#1B2A6B"))
                                     .frame(width: geometry.size.width * progress, height: 8)
                                     .cornerRadius(4)
                                     .animation(.easeInOut, value: progress)
@@ -112,13 +112,14 @@ struct TestView: View {
                             }
                             
                             // Варианты ответов
-                            VStack(spacing: 12) {
+                            VStack(spacing: 8) {
                                 AnswerButton(
                                     letter: "А",
                                     text: question.optionA,
                                     isSelected: selectedAnswer == "A",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "A",
                                     isWrong: isAnswerChecked && selectedAnswer == "A" && question.correctAnswer != "A",
+                                    showCorrectAnswer: !hasVideoAnalysis,
                                     action: { selectAnswer("A") }
                                 )
                                 
@@ -128,6 +129,7 @@ struct TestView: View {
                                     isSelected: selectedAnswer == "B",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "B",
                                     isWrong: isAnswerChecked && selectedAnswer == "B" && question.correctAnswer != "B",
+                                    showCorrectAnswer: !hasVideoAnalysis,
                                     action: { selectAnswer("B") }
                                 )
                                 
@@ -137,6 +139,7 @@ struct TestView: View {
                                     isSelected: selectedAnswer == "C",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "C",
                                     isWrong: isAnswerChecked && selectedAnswer == "C" && question.correctAnswer != "C",
+                                    showCorrectAnswer: !hasVideoAnalysis,
                                     action: { selectAnswer("C") }
                                 )
                                 
@@ -146,6 +149,7 @@ struct TestView: View {
                                     isSelected: selectedAnswer == "D",
                                     isCorrect: isAnswerChecked && question.correctAnswer == "D",
                                     isWrong: isAnswerChecked && selectedAnswer == "D" && question.correctAnswer != "D",
+                                    showCorrectAnswer: !hasVideoAnalysis,
                                     action: { selectAnswer("D") }
                                 )
                             }
@@ -168,7 +172,7 @@ struct TestView: View {
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 16)
-                                        .background(selectedAnswer != nil ? Color(hex: "#E84E1B") : Color.gray)
+                                        .background(selectedAnswer != nil ? Color(hex: "#1B2A6B") : Color.gray)
                                         .cornerRadius(12)
                                 }
                                 .disabled(selectedAnswer == nil)
@@ -223,62 +227,65 @@ struct AnswerButton: View {
     let isSelected: Bool
     let isCorrect: Bool
     let isWrong: Bool
+    let showCorrectAnswer: Bool  // ✅ Новый параметр
     let action: () -> Void
     
     var backgroundColor: Color {
-        if isCorrect {
-            return Color.green.opacity(0.2)
+        if showCorrectAnswer && isCorrect {
+            return Color.green.opacity(0.1)
         } else if isWrong {
-            return Color.red.opacity(0.2)
+            return Color.red.opacity(0.1)
         } else if isSelected {
-            return Color(hex: "#FFE600").opacity(0.2)
+            return Color(hex: "#1B2A6B").opacity(0.05)
         } else {
             return Color.white
         }
     }
     
     var borderColor: Color {
-        if isCorrect {
+        if showCorrectAnswer && isCorrect {
             return Color.green
         } else if isWrong {
             return Color.red
         } else if isSelected {
-            return Color(hex: "#FFE600")
+            return Color(hex: "#1B2A6B")
         } else {
-            return Color.gray.opacity(0.3)
+            return Color(hex: "#1B2A6B").opacity(0.2)
         }
     }
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 // Буква варианта
                 Text(letter)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundColor(isCorrect ? .green : (isWrong ? .red : Color(hex: "#1B2A6B")))
-                    .frame(width: 40, height: 40)
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundColor((showCorrectAnswer && isCorrect) ? .white : (isWrong ? .white : .white))
+                    .frame(width: 32, height: 32)
                     .background(
                         Circle()
-                            .fill(isCorrect ? Color.green.opacity(0.2) : (isWrong ? Color.red.opacity(0.2) : Color(hex: "#F5F5F5")))
+                            .fill((showCorrectAnswer && isCorrect) ? Color.green : (isWrong ? Color.red : Color(hex: "#1B2A6B")))
                     )
                 
                 // Текст ответа
                 Text(text)
-                    .font(.system(size: 15, weight: .regular, design: .rounded))
+                    .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 // Иконка результата
-                if isCorrect {
+                if showCorrectAnswer && isCorrect {
                     Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 18))
                         .foregroundColor(.green)
                 } else if isWrong {
                     Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
                         .foregroundColor(.red)
                 }
             }
-            .padding(16)
+            .padding(10)
             .background(backgroundColor)
             .cornerRadius(12)
             .overlay(
@@ -286,7 +293,7 @@ struct AnswerButton: View {
                     .stroke(borderColor, lineWidth: 2)
             )
         }
-        .disabled(isCorrect || isWrong)
+        .disabled((showCorrectAnswer && isCorrect) || isWrong)
     }
 }
 
