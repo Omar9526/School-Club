@@ -49,6 +49,11 @@ struct CourseLevelsView: View {
                         LevelCard(level: level, isPremium: profileViewModel.user?.isPremium ?? false, courseLanguage: course.contentLanguage)
                     }
                 }
+                
+                // Пробные тесты
+                NavigationLink(destination: PracticeListView(course: course)) {
+                    PracticeTestsCard(courseLanguage: course.contentLanguage)
+                }
             }
             .padding(20)
         }
@@ -185,6 +190,59 @@ struct LevelCard: View {
         .background(Color.white)
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+    }
+}
+
+// MARK: - Practice Tests Card
+struct PracticeTestsCard: View {
+    let courseLanguage: String
+    
+    var title: String {
+        courseLanguage == "RU" ? "Пробные тесты" : "Сынамык тесттер"
+    }
+    
+    var subtitle: String {
+        courseLanguage == "RU" ? "Полноценные пробные тесты ОРТ" : "ЖРТнын толук сынамык тесттери"
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Заголовок
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "#FFE600").opacity(0.2))
+                        .frame(width: 50, height: 50)
+                    
+                    Image(systemName: "star.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(Color(hex: "#FFE600"))
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(hex: "#1B2A6B"))
+                    
+                    Text(subtitle)
+                        .font(.system(size: 14, weight: .regular, design: .rounded))
+                        .foregroundColor(.gray)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(16)
+        .background(Color.white)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(hex: "#FFE600"), lineWidth: 2)
+        )
+        .shadow(color: Color(hex: "#FFE600").opacity(0.2), radius: 8, x: 0, y: 2)
     }
 }
 
